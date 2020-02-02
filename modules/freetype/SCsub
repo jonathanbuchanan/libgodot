@@ -65,13 +65,13 @@ if env['builtin_freetype']:
     # Also needed in main env for scene/
     env.Prepend(CPPPATH=[thirdparty_dir + "/include"])
 
-    env_freetype.Append(CPPDEFINES=['FT2_BUILD_LIBRARY', 'FT_CONFIG_OPTION_USE_PNG'])
+    env.Append(CPPDEFINES=['FT2_BUILD_LIBRARY', 'FT_CONFIG_OPTION_USE_PNG'])
     if (env['target'] == 'debug'):
         env_freetype.Append(CPPDEFINES=['ZLIB_DEBUG'])
 
     # Also requires libpng headers
     if env['builtin_libpng']:
-        env_freetype.Prepend(CPPPATH=["#thirdparty/libpng"])
+        env.Prepend(CPPPATH=["#thirdparty/libpng"])
 
     sfnt = thirdparty_dir + 'src/sfnt/sfnt.c'
     # Must be done after all CPPDEFINES are being set so we can copy them.
@@ -85,20 +85,8 @@ if env['builtin_freetype']:
 
     env_thirdparty = env_freetype.Clone()
     env_thirdparty.disable_warnings()
-    lib = env_thirdparty.add_library("freetype_builtin", thirdparty_sources)
 
-    # Needs to be appended to arrive after libscene in the linker call,
-    # but we don't want it to arrive *after* system libs, so manual hack
-    # LIBS contains first SCons Library objects ("SCons.Node.FS.File object")
-    # and then plain strings for system library. We insert between the two.
-    inserted = False
-    for idx, linklib in enumerate(env["LIBS"]):
-        if isbasestring(linklib): # first system lib such as "X11", otherwise SCons lib object
-            env["LIBS"].insert(idx, lib)
-            inserted = True
-            break
-    if not inserted:
-        env.Append(LIBS=[lib])
+    env.Append(sources=thirdparty_sources)
 
 # Godot source files
 env_freetype.add_source_files(env.modules_sources, "*.cpp")

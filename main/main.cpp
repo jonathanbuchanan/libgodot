@@ -845,7 +845,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		FileAccess::make_default<FileAccessNetwork>(FileAccess::ACCESS_RESOURCES);
 	}
 
-	if (globals->setup(project_path, main_pack, upwards) == OK) {
+	/*if (globals->setup(project_path, main_pack, upwards) == OK) {
 #ifdef TOOLS_ENABLED
 		found_project = true;
 #endif
@@ -860,7 +860,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 
 		goto error;
 #endif
-	}
+	}*/
 
 	GLOBAL_DEF("memory/limits/multithreaded_server/rid_pool_prealloc", 60);
 	ProjectSettings::get_singleton()->set_custom_property_info("memory/limits/multithreaded_server/rid_pool_prealloc", PropertyInfo(Variant::INT, "memory/limits/multithreaded_server/rid_pool_prealloc", PROPERTY_HINT_RANGE, "0,500,1")); // No negative and limit to 500 due to crashes
@@ -943,7 +943,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	}
 #endif
 
-	if (main_args.size() == 0 && String(GLOBAL_DEF("application/run/main_scene", "")) == "") {
+	/*if (main_args.size() == 0 && String(GLOBAL_DEF("application/run/main_scene", "")) == "") {
 #ifdef TOOLS_ENABLED
 		if (!editor && !project_manager) {
 #endif
@@ -952,7 +952,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 #ifdef TOOLS_ENABLED
 		}
 #endif
-	}
+	}*/
 
 	if (editor || project_manager) {
 		Engine::get_singleton()->set_editor_hint(true);
@@ -1855,11 +1855,8 @@ bool Main::start() {
 			// Load SSL Certificates from Project Settings (or builtin).
 			Crypto::load_default_certificates(GLOBAL_DEF("network/ssl/certificates", ""));
 
-			if (game_path != "") {
-				Node *scene = NULL;
-				Ref<PackedScene> scenedata = ResourceLoader::load(local_game_path);
-				if (scenedata.is_valid())
-					scene = scenedata->instance();
+			//if (game_path != "") {
+                Node *scene = new MainScene();
 
 				ERR_FAIL_COND_V_MSG(!scene, false, "Failed loading scene: " + local_game_path);
 				sml->add_current_scene(scene);
@@ -1889,7 +1886,7 @@ bool Main::start() {
 						hasicon = true;
 					}
 				}
-			}
+			//}
 		}
 
 #ifdef TOOLS_ENABLED

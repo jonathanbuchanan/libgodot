@@ -31,5 +31,4 @@ env.CommandNoCache("#main/app_icon.gen.h", "#main/app_icon.png", run_in_subproce
 if env["tools"]:
     SConscript('tests/SCsub')
 
-lib = env.add_library("main", env.main_sources)
-env.Prepend(LIBS=[lib])
+env.Append(sources=env.main_sources)

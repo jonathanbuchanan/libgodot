@@ -12,6 +12,4 @@ SConscript('physics_2d/SCsub')
 SConscript('visual/SCsub')
 SConscript('audio/SCsub')
 
-lib = env.add_library("servers", env.servers_sources)
-
-env.Prepend(LIBS=[lib])
+env.Append(sources=env.servers_sources)

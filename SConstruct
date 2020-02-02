@@ -110,9 +110,9 @@ opts.Add('arch', "Platform-dependent architecture (arm/arm64/x86/x64/mips/...)",
 opts.Add(EnumVariable('bits', "Target platform bits", 'default', ('default', '32', '64')))
 opts.Add('p', "Platform (alias for 'platform')", '')
 opts.Add('platform', "Target platform (%s)" % ('|'.join(platform_list), ), '')
-opts.Add(EnumVariable('target', "Compilation target", 'debug', ('debug', 'release_debug', 'release')))
+opts.Add(EnumVariable('target', "Compilation target", 'release', ('debug', 'release_debug', 'release')))
 opts.Add(EnumVariable('optimize', "Optimization type", 'speed', ('speed', 'size')))
-opts.Add(BoolVariable('tools', "Build the tools (a.k.a. the Godot editor)", True))
+opts.Add(BoolVariable('tools', "Build the tools (a.k.a. the Godot editor)", False))
 opts.Add(BoolVariable('use_lto', 'Use link-time optimization', False))
 opts.Add(BoolVariable('use_precise_math_checks', 'Math checks use very precise epsilon (useful to debug the engine)', False))
 
@@ -464,7 +464,7 @@ if selected_platform in platform_list:
         env["LIBSUFFIXES"] += [env["LIBSUFFIX"]]
     else:
         env["LIBSUFFIXES"] += [env["LIBSUFFIX"], env["SHLIBSUFFIX"]]
-    env["LIBSUFFIX"] = suffix + env["LIBSUFFIX"]
+    #env["LIBSUFFIX"] = suffix + env["LIBSUFFIX"]
     env["SHLIBSUFFIX"] = suffix + env["SHLIBSUFFIX"]
 
     if (env.use_ptrcall):
@@ -507,6 +507,8 @@ if selected_platform in platform_list:
         CacheDir(scons_cache_path)
         print("Scons cache enabled... (path: '" + scons_cache_path + "')")
 
+    env["sources"] = []
+
     Export('env')
 
     # build subdirs, the build order is dependent on link order.
@@ -522,6 +524,8 @@ if selected_platform in platform_list:
     SConscript("main/SCsub")
 
     SConscript("platform/" + selected_platform + "/SCsub")  # build selected platform
+
+    lib = env.add_library("godot", env["sources"])
 
     # Microsoft Visual Studio Project Generation
     if env['vsproj']:

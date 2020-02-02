@@ -35,6 +35,14 @@
 #include "core/os/thread.h"
 #include "core/typedefs.h"
 
+#include "scene/main/node.h"
+
+class MainScene : public Node {
+GDCLASS(MainScene, Node);
+public:
+    MainScene();
+};
+
 class Main {
 
 	static void print_help(const char *p_binary);

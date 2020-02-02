@@ -169,5 +169,4 @@ SConscript('bind/SCsub')
 
 
 # Build it all as a library
-lib = env.add_library("core", env.core_sources)
-env.Prepend(LIBS=[lib])
+env.Append(sources=env.core_sources)

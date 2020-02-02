@@ -87,5 +87,4 @@ if env['tools']:
     SConscript('import/SCsub')
     SConscript('plugins/SCsub')
 
-    lib = env.add_library("editor", env.editor_sources)
-    env.Prepend(LIBS=[lib])
+    env.Append(sources=env.editor_sources)
