@@ -2693,6 +2693,8 @@ void _Thread::_start_func(void *ud) {
 
 		ERR_FAIL_MSG("Could not call function '" + t->target_method.operator String() + "' to start thread " + t->get_id() + ": " + reason + ".");
 	}
+
+    t->emit_signal("terminated");
 }
 
 Error _Thread::start(Object *p_instance, const StringName &p_method, const Variant &p_userdata, Priority p_priority) {
@@ -2763,6 +2765,8 @@ void _Thread::_bind_methods() {
 	BIND_ENUM_CONSTANT(PRIORITY_LOW);
 	BIND_ENUM_CONSTANT(PRIORITY_NORMAL);
 	BIND_ENUM_CONSTANT(PRIORITY_HIGH);
+
+    ADD_SIGNAL(MethodInfo("terminated"));
 }
 _Thread::_Thread() {
 
