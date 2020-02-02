@@ -12,7 +12,8 @@ common_x11 = [
     "platform/x11/key_mapping_x11.cpp",
     "platform/x11/joypad_linux.cpp",
     "platform/x11/power_x11.cpp",
-    "platform/x11/detect_prime.cpp"
+    "platform/x11/detect_prime.cpp",
+    "platform/x11/godot_x11.cpp"
 ]
 
 env.Append(sources=common_x11)
