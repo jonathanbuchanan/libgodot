@@ -7,21 +7,21 @@ from platform_methods import run_in_subprocess
 import platform_windows_builders
 
 common_win = [
-    "godot_windows.cpp",
-    "context_gl_windows.cpp",
-    "crash_handler_windows.cpp",
-    "os_windows.cpp",
-    "key_mapping_windows.cpp",
-    "joypad_windows.cpp",
-    "power_windows.cpp",
-    "windows_terminal_logger.cpp"
+    "platform/windows/godot_windows.cpp",
+    "platform/windows/context_gl_windows.cpp",
+    "platform/windows/crash_handler_windows.cpp",
+    "platform/windows/os_windows.cpp",
+    "platform/windows/key_mapping_windows.cpp",
+    "platform/windows/joypad_windows.cpp",
+    "platform/windows/power_windows.cpp",
+    "platform/windows/windows_terminal_logger.cpp"
 ]
 
 res_file = 'godot_res.rc'
 res_target = "godot_res" + env["OBJSUFFIX"]
 res_obj = env.RES(res_target, res_file)
 
-prog = env.add_program('#bin/godot', common_win + res_obj, PROGSUFFIX=env["PROGSUFFIX"])
+env.Append(sources=common_win + res_obj)
 
 # Microsoft Visual Studio Project Generation
 if env['vsproj']:
