@@ -84,6 +84,8 @@
 // Singletons
 
 // Initialized in setup()
+static int _argc = 0;
+static char **_argv = NULL;
 static Engine *engine = NULL;
 static ProjectSettings *globals = NULL;
 static InputMap *input_map = NULL;
@@ -335,6 +337,9 @@ void Main::print_help(const char *p_binary) {
  */
 
 Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_phase) {
+	_argc = argc;
+	_argv = argv;
+
 	RID_OwnerBase::init_rid();
 
 	OS::get_singleton()->initialize_core();
@@ -1856,7 +1861,7 @@ bool Main::start() {
 			Crypto::load_default_certificates(GLOBAL_DEF("network/ssl/certificates", ""));
 
 			//if (game_path != "") {
-                Node *scene = new MainScene();
+                Node *scene = new MainScene(_argc, _argv);
 
 				ERR_FAIL_COND_V_MSG(!scene, false, "Failed loading scene: " + local_game_path);
 				sml->add_current_scene(scene);

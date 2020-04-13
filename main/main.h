@@ -40,11 +40,10 @@
 class MainScene : public Node {
 GDCLASS(MainScene, Node);
 public:
-    MainScene();
+    MainScene(int argc, char *argv[]);
 };
 
 class Main {
-
 	static void print_help(const char *p_binary);
 	static uint64_t last_ticks;
 	static uint64_t target_ticks;
